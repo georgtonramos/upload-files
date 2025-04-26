@@ -1,24 +1,21 @@
 require('dotenv').config();
-const AWS = require('aws-sdk');
+const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+const { v4: uuidv4 } = require('uuid');
 
-// Configura o cliente S3 usando as variáveis do .env
-const s3 = new AWS.S3({
+const s3 = new S3Client({
+    region: 'us-east-1', // Pode ser qualquer valor com MinIO
     endpoint: process.env.MINIO_ENDPOINT,
-    accessKeyId: process.env.MINIO_ACCESS_KEY,
-    secretAccessKey: process.env.MINIO_SECRET_KEY,
-    s3ForcePathStyle: true,
-    signatureVersion: 'v4'
+    credentials: {
+        accessKeyId: process.env.MINIO_ACCESS_KEY,
+        secretAccessKey: process.env.MINIO_SECRET_KEY
+    },
+    forcePathStyle: true // Obrigatório com MinIO
 });
 
-// Nome do bucket
 const BUCKET_NAME = process.env.MINIO_BUCKET;
 
-const { v4: uuidv4 } = require('uuid'); // Para gerar IDs únicos
-// Instale também: npm install uuid
-
 async function uploadToMinio(file) {
-    const maxSize = 5 * 1024 * 1024; // 5 MB
-
+    const maxSize = 5 * 1024 * 1024;
     if (file.size > maxSize) {
         throw new Error('Arquivo excede o tamanho permitido.');
     }
@@ -31,12 +28,15 @@ async function uploadToMinio(file) {
         Key: filename,
         Body: file.buffer,
         ContentType: file.mimetype,
-        ACL: 'public-read'
+        ACL: 'public-read' // necessário se quiser acesso público direto
     };
 
-    const data = await s3.upload(params).promise();
-    console.log('Arquivo enviado para:', data.Location);
-    return data.Location;
+    const command = new PutObjectCommand(params);
+    await s3.send(command);
+
+    // Retorna a URL pública no MinIO
+    const publicUrl = `${process.env.MINIO_ENDPOINT}/${BUCKET_NAME}/${filename}`;
+    return publicUrl;
 }
 
 module.exports = { uploadToMinio };
