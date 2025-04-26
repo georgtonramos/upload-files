@@ -1,0 +1,113 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background: #f9f9f9;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.upload-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-radius: 6px;
+    margin-top: 10px;
+    font-size: 14px;
+    color: white;
+    word-wrap: break-word;
+}
+
+.upload-pdf { background-color: #24af2b; }
+.upload-img { background-color: #0275d8; }
+.upload-zip { background-color: #5bc0de; }
+.upload-exe { background-color: #f11414; }
+.upload-generic { background-color: #6c757d; }
+
+.upload-info {
+    flex: 1;
+}
+
+.upload-info a {
+    color: white;
+    word-break: break-word;
+    display: block;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.upload-info small {
+    display: block;
+    opacity: 0.85;
+    font-size: 12px;
+    margin-top: 4px;
+    color: #f8f9fa;
+}
+
+#links-upload p.error {
+    background-color: #ffe5e5;
+    color: #d40000;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+button.copy-btn {
+    margin-left: 10px;
+    padding: 5px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    background: #007bff;
+    border: none;
+    color: white;
+    border-radius: 4px;
+}
+
+button.copy-btn:hover {
+    background: #0056b3;
+}
+
+@media (max-width: 480px) {
+    .upload-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    button.copy-btn {
+        margin: 10px 0 0;
+        width: 100%;
+    }
+}
+
+button.limpar-btn {
+    margin-top: 10px;
+    padding: 8px 16px;
+    font-size: 14px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button.limpar-btn:hover {
+    background-color: #c82333;
+}
+
+#links-upload {
+    transition: opacity 0.5s ease;
+}
